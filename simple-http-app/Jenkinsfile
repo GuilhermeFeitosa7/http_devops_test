@@ -13,13 +13,13 @@ pipeline {
                     set -e
 
                     # Verifica se a aplicacao esta respondendo
-                    curl -fsS http://10.88.0.4:8080 >/dev/null || { echo "Aplicacao inacessivel"; exit 1; }
+                    curl -fsS http://10.88.0.7:8080 >/dev/null || { echo "Aplicacao inacessivel"; exit 1; }
 
                     # Cria config do pa11y com flags do Chromium
                     echo '{"chromeLaunchConfig":{"executablePath":"/usr/bin/chromium","args":["--no-sandbox","--disable-setuid-sandbox"]}}' > /tmp/pa11y.json
 
                     # Executa o scan de acessibilidade com pa11y (WCAG2AA)
-                    npx -y pa11y@latest http://10.88.0.4:8080 --standard WCAG2AA --reporter cli --config /tmp/pa11y.json
+                    npx -y pa11y@latest http://10.88.0.7:8080 --standard WCAG2AA --reporter cli --config /tmp/pa11y.json
                 '''
             }
         
