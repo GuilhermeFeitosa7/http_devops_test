@@ -9,10 +9,10 @@ pipeline {
                     set -e
 
                     # Verifica se a aplicacao esta respondendo
-                    curl -fsS http://host.docker.internal:8080 >/dev/null || { echo "Aplicacao inacessivel"; exit 1; }
+                    curl -fsS localhost:8080 >/dev/null || { echo "Aplicacao inacessivel"; exit 1; }
 
                     # Executa o scan de acessibilidade com pa11y (WCAG2AA)
-                    npx -y pa11y@latest http://host.docker.internal:8080 --standard WCAG2AA --reporter cli
+                    npx -y pa11y@latest localhost:8080 --standard WCAG2AA --reporter cli
                 '''
             }
         }
