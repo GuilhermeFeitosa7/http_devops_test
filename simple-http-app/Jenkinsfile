@@ -14,8 +14,14 @@ pipeline {
                     # Verifica se a aplicacao esta respondendo
                     curl -fsS http://10.88.0.4:8080 >/dev/null || { echo "Aplicacao inacessivel"; exit 1; }
 
+                    # Instala Chromium do sistema (resolve dependencias de libs nativas)
+                    apt-get update -qq && apt-get install -y -qq chromium
+
+                    # Aponta pa11y para o Chromium do sistema
+                    export PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
+
                     # Executa o scan de acessibilidade com pa11y (WCAG2AA)
-                    npx -y pa11y@latest http://10.88.0.4:8080 --standard WCAG2AA --reporter cli
+                    npx -y pa11y@latest http://10.88.0.4:8080 --standard WCAG2AA --reporter cli --chromium-launch-args="--no-sandbox --disable-setuid-sandbox"
                 '''
             }
         }
