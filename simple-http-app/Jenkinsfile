@@ -9,10 +9,10 @@ pipeline {
                     set -e
 
                     # Verifica se a aplicacao esta respondendo
-                    curl -fsS http://172.17.0.1:8080 >/dev/null || { echo "Aplicacao inacessivel"; exit 1; }
+                    curl -fsS http://10.88.0.4:8080 >/dev/null || { echo "Aplicacao inacessivel"; exit 1; }
 
                     # Executa o scan de acessibilidade com pa11y (WCAG2AA)
-                    npx -y pa11y@latest http://172.17.0.1:8080 --standard WCAG2AA --reporter cli
+                    npx -y pa11y@latest http://10.88.0.4:8080 --standard WCAG2AA --reporter cli
                 '''
             }
         }
