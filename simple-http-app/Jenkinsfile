@@ -5,23 +5,18 @@ pipeline {
 
         stage('Acessibilidade') {
             steps {
-                withCredentials([sshUserPrivateKey(credentialsId: 'jenkins', keyFileVariable: 'keyfile', usernameVariable: 'username')]) {
-                    sh """
-                        set -e
+                sh '''
+                    set -e
 
-                        ssh -o StrictHostKeyChecking=no -i "$keyfile" "$username@teste-devops" '
-                            set -e
+                    # Verifica se a aplicacao esta respondendo
+                    curl -fsS http://host.docker.internal:8080 >/dev/null || { echo "Aplicacao inacessivel"; exit 1; }
 
-                            # Verifica se a aplicacao esta respondendo
-                            curl -fsS http://teste-devops >/dev/null || { echo "Aplicacao inacessivel em http://teste-devops"; exit 1; }
-
-                            # Executa o scan de acessibilidade com pa11y (WCAG2AA)
-                            npx -y pa11y@latest http://teste-devops --standard WCAG2AA --reporter cli
-                        '
-                    """
-                }
+                    # Executa o scan de acessibilidade com pa11y (WCAG2AA)
+                    npx -y pa11y@latest http://host.docker.internal:8080 --standard WCAG2AA --reporter cli
+                '''
             }
         }
 
     }
+}
 }
