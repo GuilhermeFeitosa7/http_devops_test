@@ -6,7 +6,7 @@ pipeline {
 
     stages {
 
-        stage('Acessibilidade') {
+        
            stage('Acessibilidade') {
             steps {
                 sh '''
@@ -22,7 +22,7 @@ pipeline {
                     npx -y pa11y@latest http://10.88.0.4:8080 --standard WCAG2AA --reporter cli --config /tmp/pa11y.json
                 '''
             }
-        }
+        
 
         }
 
